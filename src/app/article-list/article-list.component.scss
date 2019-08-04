@@ -1,3 +1,35 @@
-.mat-list-icon {
-  color: rgba(0, 0, 0, 0.54);
+.article-wrapper {
+  display: flex;
+  justify-content: center;
+
+  .article-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-content: space-around;
+
+    .card {
+      max-width: 250px;
+      margin: 20px 5px 0 5px;
+
+      .mat-card-title {
+        overflow: hidden;
+        height: 65px;
+        font-size: 17px;
+      }
+
+      .card-description {
+        height: 140px;
+        overflow: hidden;
+        padding: 20px 0;
+      }
+
+      .img-wrapper {
+        width: calc(100% + 32px);
+        height: 150px;
+        overflow: hidden;
+        margin: 0 -16px 16px -16px;
+      }
+    }
+  }
 }

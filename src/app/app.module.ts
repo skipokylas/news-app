@@ -9,11 +9,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule, MatSidenavModule, MatMenuModule } from '@angular/material';
+import { MatToolbarModule, MatSidenavModule, MatMenuModule, MatSelectModule, MatCardModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
+import { CountryPickerComponent } from './country-picker/country-picker.component';
 
 @NgModule({
-  declarations: [AppComponent, SidenavContentComponent, ArticleListComponent],
+  declarations: [AppComponent, SidenavContentComponent, ArticleListComponent, CountryPickerComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -24,7 +25,9 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatToolbarModule,
     MatSidenavModule,
     MatMenuModule,
-    LayoutModule
+    LayoutModule,
+    MatSelectModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
