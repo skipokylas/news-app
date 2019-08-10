@@ -1,9 +1,9 @@
 <button mat-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-    <span>{{'Country'}}</span>
+    <span>{{currentCountry$ | async}}</span>
     <mat-icon>arrow_drop_down</mat-icon>
 </button>
 <mat-menu #menu="matMenu">
-    <button mat-menu-item *ngFor="let country of countries" (click)="selectCountry(country)">
-        <span>{{country}}</span>
+    <button mat-menu-item *ngFor="let country of countries" (click)="selectCountry(country.name)">
+        <span>{{country.name}}</span>
     </button>
 </mat-menu>

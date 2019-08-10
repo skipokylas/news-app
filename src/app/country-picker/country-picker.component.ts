@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Countries } from '../models/countries.enum';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Countries } from '../models/countries';
+import { LocalizationService } from '../services/localization.service';
+import { LocalStorageService } from '../services/local-starage.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-country-picker',
@@ -7,13 +11,28 @@ import { Countries } from '../models/countries.enum';
   styleUrls: ['./country-picker.component.scss']
 })
 export class CountryPickerComponent implements OnInit {
-  countries = Object.keys(Countries);
+  countries = Object.values(Countries);
+  currentCountry$: Observable<string>;
+  currentCountry: string;
 
-  constructor() {}
+  constructor(private localizationService: LocalizationService, private ls: LocalStorageService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.currentCountry$ = this.localizationService.currentCountrySub$.pipe(
+      map((countryShort: string): string => Countries[countryShort].name)
+    );
+  }
 
   selectCountry(country) {
-    console.log(Countries[country]);
+    const isoCountry = (() => {
+      for (const key in Countries) {
+        if (Countries[key].name === country) {
+          return key;
+        }
+      }
+    })();
+
+    this.ls.set('country', isoCountry);
+    this.localizationService.currentCountrySub$.next(isoCountry);
   }
 }

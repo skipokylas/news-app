@@ -19,6 +19,12 @@ export interface ILocalization {
   org: string;
 }
 
+export interface ICountry {
+  [key: string]: {
+    name: string;
+  };
+}
+
 export interface IArticle {
   source: ISource;
   author: string;
@@ -28,6 +34,13 @@ export interface IArticle {
   urlToImage: string;
   publishedAt: string;
   content: string;
+}
+
+export interface IArticleResponse {
+  status: string;
+  totalResults: number;
+  articles?: IArticle[];
+  message?: string;
 }
 
 export interface ISource {

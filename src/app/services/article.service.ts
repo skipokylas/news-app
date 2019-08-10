@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { IArticle, ITopHeadlinesParams, ILocalization } from '../models/models';
+import { IArticle, ITopHeadlinesParams, ILocalization, IArticleResponse } from '../models/models';
 import { LocalizationService } from './localization.service';
 import { switchMap } from 'rxjs/operators';
 
@@ -12,21 +12,13 @@ export class ArticleService {
 
   constructor(private http: HttpClient, private localizationService: LocalizationService) {}
 
-  public getTopHeadlines(params: ITopHeadlinesParams = {}): Observable<IArticle[]> {
-    return this.http.get<IArticle[]>(`${this.BASE_URL}`, {
+  public getTopHeadlines(params: ITopHeadlinesParams = {}): Observable<IArticleResponse> {
+    return this.http.get<IArticleResponse>(`${this.BASE_URL}`, {
       params: Object.assign({ apiKey: this.newsApiKey }, params)
     });
   }
 
-  public getEverything(): Observable<IArticle[]> {
-    return this.http.get<IArticle[]>('');
-  }
-
-  public getTopHeadlinesByCurrentCountry(): Observable<IArticle[]> {
-    return this.localizationService.getLocalization().pipe(
-      switchMap((localization: ILocalization) => {
-        return this.getTopHeadlines({ country: localization.country.toLocaleLowerCase() });
-      })
-    );
+  public getEverything(): Observable<IArticleResponse> {
+    return this.http.get<IArticleResponse>('');
   }
 }
