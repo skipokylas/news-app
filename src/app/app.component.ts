@@ -1,10 +1,14 @@
 import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { ArticleService } from './services/article.service';
+import { Categories } from './models/categories';
 import { MediaQueryHelper } from './shared/helpers/media-query.helper';
-import { IArticle, IArticleResponse } from './models/models';
+import { IArticle, IArticleResponse, TCategories } from './models/models';
 import { Observable } from 'rxjs';
-import { LocalizationService } from './services/localization.service';
+import { CountryService } from './services/country.service';
 import { take } from 'rxjs/operators';
+import { StoreService } from './services/store.service';
+
+const pageSize = 40;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,7 +16,7 @@ import { take } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit, OnDestroy {
   articles: IArticle[];
-  fillerNav = ['test1', 'test2'];
+  categories = Categories;
   mobileQuery: MediaQueryList;
   currentCuntry$: Observable<string>;
 
@@ -20,25 +24,43 @@ export class AppComponent implements OnInit, OnDestroy {
     private articleService: ArticleService,
     private mediaQueryHelper: MediaQueryHelper,
     private changeDetectorRef: ChangeDetectorRef,
-    private localizationService: LocalizationService
+    private countryService: CountryService,
+    private store: StoreService
   ) {}
 
   ngOnInit() {
-    this.localizationService
+    this.countryService
       .getCountry()
       .pipe(take(1))
-      .subscribe((country: any) => this.localizationService.currentCountrySub$.next(country));
+      .subscribe((country: any) => this.store.changeCountry$.next(country));
+
+    this.store.changeCountry$.subscribe(country => {
+      this.articleService
+        .getTopHeadlines({ country, pageSize })
+        .pipe(take(1))
+        .subscribe((data: IArticleResponse) => {
+          this.articles = data.articles;
+        });
+    });
+
+    this.store.changeCategory$.subscribe((category: TCategories) => {
+      this.articleService
+        .getTopHeadlines({ country: this.store.changeCountry$.value, category, pageSize })
+        .pipe(take(1))
+        .subscribe((data: IArticleResponse) => {
+          this.articles = data.articles;
+        });
+    });
 
     this.mobileQuery = this.mediaQueryHelper.getMobileQuery(this.changeDetectorRef);
-    this.localizationService.currentCountrySub$.subscribe(country => {
-      this.articleService
-        .getTopHeadlines({ country })
-        .pipe(take(1))
-        .subscribe((data: IArticleResponse) => (this.articles = data.articles));
-    });
   }
 
   ngOnDestroy() {
     this.mediaQueryHelper.removeMobileQueryEventListener();
+  }
+
+  changeCategory(category) {
+    this.store.changeCategory$.next(category);
+    console.log(category);
   }
 }

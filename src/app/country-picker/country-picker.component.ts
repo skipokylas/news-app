@@ -1,9 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Countries } from '../models/countries';
-import { LocalizationService } from '../services/localization.service';
 import { LocalStorageService } from '../services/local-starage.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { StoreService } from '../services/store.service';
 
 @Component({
   selector: 'app-country-picker',
@@ -15,10 +15,10 @@ export class CountryPickerComponent implements OnInit {
   currentCountry$: Observable<string>;
   currentCountry: string;
 
-  constructor(private localizationService: LocalizationService, private ls: LocalStorageService) {}
+  constructor(private ls: LocalStorageService, private store: StoreService) {}
 
   ngOnInit() {
-    this.currentCountry$ = this.localizationService.currentCountrySub$.pipe(
+    this.currentCountry$ = this.store.changeCountry$.pipe(
       map((countryShort: string): string => Countries[countryShort].name)
     );
   }
@@ -33,6 +33,6 @@ export class CountryPickerComponent implements OnInit {
     })();
 
     this.ls.set('country', isoCountry);
-    this.localizationService.currentCountrySub$.next(isoCountry);
+    this.store.changeCountry$.next(isoCountry);
   }
 }

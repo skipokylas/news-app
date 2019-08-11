@@ -51,9 +51,10 @@ export interface ISource {
 export interface ITopHeadlinesParams {
   country?: string;
   sources?: string;
-  category?: Categories;
+  category?: TCategories;
   q?: string;
+  pageSize?: number;
   apiKey?: string;
 }
 
-export type Categories = 'business' | 'entertainment' | 'general' | 'health' | 'science' | 'sports' | 'technology';
+export type TCategories = 'business' | 'entertainment' | 'general' | 'health' | 'science' | 'sports' | 'technology';

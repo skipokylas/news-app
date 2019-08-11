@@ -6,12 +6,10 @@ import { LocalStorageService } from './local-starage.service';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class LocalizationService {
+export class CountryService {
   private BASE_URL = 'https://ipapi.co/json';
 
   constructor(private http: HttpClient, private ls: LocalStorageService) {}
-
-  public currentCountrySub$: BehaviorSubject<string> = new BehaviorSubject('UA');
 
   public getLocalization(): Observable<ILocalization> {
     return this.http.get<ILocalization>(`${this.BASE_URL}`);
