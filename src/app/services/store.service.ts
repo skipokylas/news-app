@@ -11,4 +11,5 @@ export class StoreService {
 
   public changeCountry$: BehaviorSubject<string> = new BehaviorSubject(null);
   public changeCategory$: Subject<string> = new Subject();
+  public handleEmptySearch$: BehaviorSubject<boolean> = new BehaviorSubject(true);
 }

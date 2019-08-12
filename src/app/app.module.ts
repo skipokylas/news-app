@@ -12,9 +12,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule, MatSidenavModule, MatMenuModule, MatSelectModule, MatCardModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 import { CountryPickerComponent } from './country-picker/country-picker.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
-  declarations: [AppComponent, SidenavContentComponent, ArticleListComponent, CountryPickerComponent],
+  declarations: [AppComponent, SidenavContentComponent, ArticleListComponent, CountryPickerComponent, SearchComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
