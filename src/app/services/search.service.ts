@@ -25,7 +25,6 @@ export class SearchService {
   }
 
   private handleEmptyValue(isEmpty: boolean): void {
-    console.log(isEmpty);
     this.storeService.handleEmptySearch$.next(isEmpty);
   }
 }
