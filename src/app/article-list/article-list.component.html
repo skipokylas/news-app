@@ -1,6 +1,6 @@
 <div class="article-wrapper">
     <div class="article-list">
-        <mat-card class="card" *ngFor="let article of articles">
+        <mat-card class="card" *ngFor="let article of articles" (click)="openArticle(article.url)">
             <mat-card-header>
                 <mat-card-subtitle>{{article.source.name}}</mat-card-subtitle>
             </mat-card-header>

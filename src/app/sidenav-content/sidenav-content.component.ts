@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { IArticle } from '../models/models';
 
 @Component({
@@ -6,10 +6,6 @@ import { IArticle } from '../models/models';
   templateUrl: './sidenav-content.component.html',
   styleUrls: ['./sidenav-content.component.scss']
 })
-export class SidenavContentComponent implements OnInit {
+export class SidenavContentComponent {
   @Input() articles: IArticle[];
-
-  constructor() {}
-
-  ngOnInit() {}
 }
