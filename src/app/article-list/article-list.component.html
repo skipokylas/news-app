@@ -1,5 +1,5 @@
 <div class="article-wrapper">
-    <div class="article-list">
+    <div class="article-list" *ngIf="articles; else spiner">
         <mat-card class="card" *ngFor="let article of articles" (click)="openArticle(article.url)">
             <mat-card-header>
                 <mat-card-subtitle>{{article.source.name}}</mat-card-subtitle>
@@ -18,4 +18,9 @@
             </mat-card-content>
         </mat-card>
     </div>
+    <ng-template #spiner class="progress-spinner-wrapper">
+        <div class="progress-spinner">
+            <mat-progress-spinner class="example-margin" color="primary" mode="indeterminate" value="50"></mat-progress-spinner>
+        </div>
+    </ng-template>
 </div>

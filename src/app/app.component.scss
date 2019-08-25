@@ -3,6 +3,9 @@ mat-sidenav {
   position: fixed;
   top: 64px;
 }
+.mat-drawer-container {
+  margin-top: 0 !important;
+}
 
 mat-toolbar {
   position: sticky;
@@ -35,4 +38,9 @@ mat-toolbar {
   visibility: visible;
   opacity: 1;
   transition: visibility 0s linear 0s, opacity 1000ms;
+}
+
+.paginator-container {
+  height: 56px;
+  background: #424242;
 }

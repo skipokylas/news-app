@@ -1,5 +1,5 @@
 import { Injectable, ElementRef } from '@angular/core';
-import { Observable, fromEvent, from, merge } from 'rxjs';
+import { Observable, fromEvent, merge } from 'rxjs';
 import { map, filter, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { StoreService } from './store.service';
 

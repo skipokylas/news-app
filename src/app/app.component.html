@@ -3,18 +3,29 @@
     <button mat-icon-button (click)="snav.toggle()" [ngClass]="{
     'hidden': !(isInputEmpty$ | async),
     'visible': (isInputEmpty$ | async)
-   }">
+    }">
       <mat-icon>menu</mat-icon>
+
     </button>
     <h1 class="example-app-name">News App</h1>
+
     <app-search class="search-container"></app-search>
+
     <span class="example-fill-remaining-space"></span>
 
     <app-country-picker [ngClass]="{'hidden': !(isInputEmpty$ | async), 'visible': (isInputEmpty$ | async)}"></app-country-picker>
 
   </mat-toolbar>
 
+  <div class="paginator-container">
+    <mat-paginator [length]="paginationService.length" [pageSize]="paginationService.pageSize" [pageSizeOptions]="paginationService.pageSizeOptions" (page)="changePage($event)" [ngClass]="{
+      'visible': !(isInputEmpty$ | async),
+      'hidden': (isInputEmpty$ | async)
+     }"></mat-paginator>
+  </div>
+
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+
     <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
         <a mat-list-item routerLink="." *ngFor="let category of categories" (click)="changeCategory(category)">{{category}}</a>
@@ -24,5 +35,6 @@
     <mat-sidenav-content>
       <app-sidenav-content [articles]="articles$ | async"></app-sidenav-content>
     </mat-sidenav-content>
+
   </mat-sidenav-container>
 </div>

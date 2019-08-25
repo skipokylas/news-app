@@ -13,4 +13,8 @@ export class ArticleComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public sanitizer: DomSanitizer
   ) {}
+
+  redirect() {
+    (window as any).open(this.data.url, '_blank');
+  }
 }

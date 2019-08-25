@@ -6,10 +6,18 @@ import { AppComponent } from './app.component';
 import { SidenavContentComponent } from './sidenav-content/sidenav-content.component';
 import { ArticleListComponent } from './article-list/article-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule, MatSidenavModule, MatMenuModule, MatSelectModule, MatCardModule } from '@angular/material';
+import {
+  MatToolbarModule,
+  MatPaginatorModule,
+  MatSidenavModule,
+  MatMenuModule,
+  MatSelectModule,
+  MatCardModule,
+  MatProgressSpinnerModule,
+  MatButtonModule,
+  MatListModule,
+  MatIconModule
+} from '@angular/material';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LayoutModule } from '@angular/cdk/layout';
 import { CountryPickerComponent } from './country-picker/country-picker.component';
@@ -38,7 +46,9 @@ import { ArticleComponent } from './article/article.component';
     LayoutModule,
     MatSelectModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule
   ],
   entryComponents: [ArticleComponent],
   providers: [],

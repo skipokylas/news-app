@@ -1,1 +1,5 @@
+<div class="sourse-btn-container" (click)="redirect()">
+    <button mat-flat-button color="primary">Click to read from source</button>
+</div>
+
 <iframe [src]='sanitizer.bypassSecurityTrustResourceUrl(data.url)' onError="load()" width="100%" height="700" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>

@@ -2,16 +2,15 @@ import { Component, ChangeDetectorRef, OnInit, OnDestroy, ViewChildren, QueryLis
 import { ArticleService } from './services/article.service';
 import { Categories } from './models/categories';
 import { MediaQueryHelper } from './shared/helpers/media-query.helper';
-import { IArticle, IArticleResponse, TCategories } from './models/models';
+import { IArticle, IPagination } from './models/models';
 import { Observable } from 'rxjs';
 import { CountryService } from './services/country.service';
-import { switchMap, filter, skip, first, map } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { merge } from 'rxjs';
 import { StoreService } from './services/store.service';
-import { SearchService } from './services/search.service';
 import { SearchComponent } from './search/search.component';
+import { PaginationService } from './services/pagination.service';
 
-const pageSize = 40;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -24,10 +23,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   categories = Categories;
   mobileQuery: MediaQueryList;
   isInputEmpty$: Observable<boolean>;
-  articlesByCountry$: Observable<IArticle[]>;
-  articlesByCategory$: Observable<IArticle[]>;
-  articlesBySearch$: Observable<IArticle[]>;
-  articlesWhenInputIsEmpty$: Observable<IArticle[]>;
   articles$: Observable<IArticle[]>;
 
   constructor(
@@ -36,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private changeDetectorRef: ChangeDetectorRef,
     private countryService: CountryService,
     private store: StoreService,
-    private searchService: SearchService
+    protected paginationService: PaginationService
   ) {}
 
   ngOnInit() {
@@ -45,54 +40,17 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(first())
       .subscribe((country: any) => this.store.changeCountry$.next(country));
 
-    this.articlesByCountry$ = this.store.changeCountry$.pipe(
-      switchMap((country: string) =>
-        this.articleService.getTopHeadlines({ country, pageSize }).pipe(
-          first(),
-          map((data: IArticleResponse): IArticle[] => data.articles)
-        )
-      )
-    );
-
-    this.articlesByCategory$ = this.store.changeCategory$.pipe(
-      switchMap((category: TCategories) =>
-        this.articleService.getTopHeadlines({ country: this.store.changeCountry$.value, category, pageSize }).pipe(
-          first(),
-          map((data: IArticleResponse): IArticle[] => data.articles)
-        )
-      )
-    );
-
     this.mobileQuery = this.mediaQueryHelper.getMobileQuery(this.changeDetectorRef);
     this.isInputEmpty$ = this.store.handleEmptySearch$;
-
-    this.articlesWhenInputIsEmpty$ = this.isInputEmpty$.pipe(
-      filter((isInputClear: boolean) => isInputClear),
-      skip(1),
-      switchMap(() =>
-        this.articleService
-          .getTopHeadlines({ country: this.store.changeCountry$.value })
-          .pipe(map((data: IArticleResponse): IArticle[] => data.articles))
-      )
-    );
   }
 
   ngAfterViewInit() {
-    this.articlesBySearch$ = this.searchService
-      .getInputValue(this.searchInput.first.searchInput)
-      .pipe(
-        switchMap((value: string) =>
-          this.articleService
-            .getEverything({ q: value, pageSize })
-            .pipe(map((data: IArticleResponse): IArticle[] => data.articles))
-        )
-      );
-
     this.articles$ = merge(
-      this.articlesByCountry$,
-      this.articlesByCategory$,
-      this.articlesWhenInputIsEmpty$,
-      this.articlesBySearch$
+      this.articleService.getArticlesByCountry(),
+      this.articleService.getArticlesByPage(this.searchInput.first.searchInput),
+      this.articleService.getArticlesByCategory(),
+      this.articleService.getArticlesWhenInputIsEmpty(),
+      this.articleService.getArticlesBySearch(this.searchInput.first.searchInput)
     );
   }
 
@@ -100,7 +58,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.mediaQueryHelper.removeMobileQueryEventListener();
   }
 
-  changeCategory(category) {
+  changeCategory(category: string): void {
     this.store.changeCategory$.next(category);
+  }
+
+  changePage(event: IPagination): void {
+    this.store.changePage$.next(event);
   }
 }

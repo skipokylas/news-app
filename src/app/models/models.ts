@@ -55,6 +55,14 @@ export interface ITopHeadlinesParams {
   q?: string;
   pageSize?: number;
   apiKey?: string;
+  page?: number;
+}
+
+export interface IPagination {
+  length: number;
+  pageIndex: number;
+  pageSize: number;
+  previousPageIndex: number;
 }
 
 export type TCategories = 'business' | 'entertainment' | 'general' | 'health' | 'science' | 'sports' | 'technology';
