@@ -17,10 +17,10 @@ export class CountryService {
 
   public getCountry(): Observable<string> {
     const country = this.ls.get('country');
-    if (!!country) {
-      return of(country);
+    if (!country) {
+      return of('US'); // 'US' by default for first login
     } else {
-      this.getLocalization().pipe(
+      return this.getLocalization().pipe(
         map((localization: ILocalization) => {
           this.ls.set('country', localization.country);
           return localization.country;

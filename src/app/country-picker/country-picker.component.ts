@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Countries } from '../models/countries';
 import { LocalStorageService } from '../services/local-starage.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {filter, map, tap} from 'rxjs/operators';
 import { StoreService } from '../services/store.service';
 
 @Component({
@@ -19,6 +19,7 @@ export class CountryPickerComponent implements OnInit {
 
   ngOnInit() {
     this.currentCountry$ = this.store.changeCountry$.pipe(
+      filter(countryShort => !!countryShort),
       map((countryShort: string): string => Countries[countryShort].name)
     );
   }
